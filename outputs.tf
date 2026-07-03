@@ -30,3 +30,28 @@ output "nat_gateway_id" {
 output "nat_public_ip" {
   value = aws_eip.nat.public_ip
 }
+
+output "rds_endpoint" {
+  value = aws_db_instance.main.endpoint
+}
+
+output "ecr_repo_arn" {
+  value = aws_ecr_repository.main.arn
+}
+
+output "ecr_repo_rul" {
+  value = aws_ecr_repository.main.repository_url
+}
+
+
+# output "alb_dns_name" {
+#   value = module.cluster.alb_dns_name
+# }
+
+# output "ecs_cluster_name" {
+#   value = module.cluster.cluster_name
+# }
+
+# output "invoice_service_name" {
+#   value = module.invoice_service.service_name
+# }
