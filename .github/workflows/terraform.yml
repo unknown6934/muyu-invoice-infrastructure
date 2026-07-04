@@ -20,3 +20,21 @@ jobs:
       - run: terraform fmt -check -recursive
       - run: terraform init -backend=false -input=false
       - run: terraform validate
+
+      - name: Build and push to ECR
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          # 1. Autenticar con ECR
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 086241318123.dkr.ecr.$AWS_REGION.amazonaws.com
+          
+          # 2. Construir la imagen
+          docker build -t muyu .
+          
+          # 3. Etiquetar
+          docker tag muyu:latest 086241318123.dkr.ecr.$AWS_REGION.amazonaws.com/muyu:latest
+          
+          # 4. Enviar
+          docker push 086241318123.dkr.ecr.$AWS_REGION.amazonaws.com/muyu:latest
